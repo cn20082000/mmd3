@@ -1,32 +1,26 @@
 package com.cn.mmd3_be.model.response.api
 
-import com.cn.mmd3_be.model.entity.CharacterEntity
+import com.cn.mmd3_be.model.entity.ProducerEntity
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class CharacterResponse(
+data class ProducerResponse(
     val id: String? = null,
     val name: String? = null,
-    val url: String? = null,
     val description: String? = null,
-    val world: WorldResponse? = null,
 ) {
 
-    constructor(entity: CharacterEntity) : this(
+    constructor(entity: ProducerEntity) : this(
         entity.id,
         entity.name,
-        entity.url,
         entity.description,
-        entity.world?.let { WorldResponse(it) }
     )
 
     companion object {
-        fun lite(entity: CharacterEntity) = CharacterResponse(
+        fun lite(entity: ProducerEntity) = ProducerResponse(
             entity.id,
             entity.name,
-            entity.url,
             null,
-            entity.world?.let { WorldResponse.lite(it) },
         )
     }
 }

@@ -96,6 +96,7 @@ class CharacterServiceImpl(
         return CharacterResponse(entity)
     }
 
+    @Transactional
     override fun deleteCharacter(request: CharacterUpdateRequest) {
         val character = characterRepo.getById(request.id) ?: throw ApiException()
             .httpStatus(HttpStatus.NOT_FOUND)
