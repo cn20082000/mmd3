@@ -63,24 +63,6 @@ class CharacterServiceImpl(
         )
     }
 
-    override fun getPagingCharacterByWorld(paging: PagingRequestModel<WorldUpdateRequest>): PagingResponseModel {
-        val world = paging.data?.id?.let { worldRepo.getById(it) } ?: throw ApiException()
-            .httpStatus(HttpStatus.NOT_FOUND)
-            .error(EError.NOT_FOUND_RECORD)
-
-        val pageable = PageRequest.of(paging.pageIndex, paging.pageSize, Sort.by(Sort.Direction.ASC, "name"))
-        val page = characterRepo.getPageByWorld(world, pageable)
-
-        return PagingResponseModel(
-            page.content.map { CharacterResponse(it) },
-            page.pageable.pageNumber,
-            page.pageable.pageSize,
-            page.content.size,
-            page.totalPages,
-            page.totalElements
-        )
-    }
-
     @Transactional
     override fun updateCharacter(request: CharacterUpdateRequest): CharacterResponse {
         val character = characterRepo.getById(request.id) ?: throw ApiException()

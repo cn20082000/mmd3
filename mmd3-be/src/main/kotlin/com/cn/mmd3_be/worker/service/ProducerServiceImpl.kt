@@ -7,8 +7,10 @@ import com.cn.mmd3_be.model.request.api.ProducerCreateRequest
 import com.cn.mmd3_be.model.request.api.ProducerUpdateRequest
 import com.cn.mmd3_be.model.request.base.PagingRequestModel
 import com.cn.mmd3_be.model.response.api.ProducerResponse
+import com.cn.mmd3_be.model.response.api.SongResponse
 import com.cn.mmd3_be.model.response.base.PagingResponseModel
 import com.cn.mmd3_be.worker.repository.ProducerRepository
+import com.cn.mmd3_be.worker.repository.SongRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -17,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ProducerServiceImpl(
-    private val producerRepo: ProducerRepository
+    private val producerRepo: ProducerRepository,
+    private val songRepo: SongRepository,
 ) : ProducerService {
 
     @Transactional
@@ -55,6 +58,23 @@ class ProducerServiceImpl(
             page.content.size,
             page.totalPages,
             page.totalElements
+        )
+    }
+
+    override fun getSongLite(request: ProducerUpdateRequest): PagingResponseModel {
+        val producer = producerRepo.getById(request.id) ?: throw ApiException()
+            .httpStatus(HttpStatus.NOT_FOUND)
+            .error(EError.NOT_FOUND_RECORD)
+
+        val list = songRepo.getByProducer(producer)
+
+        return PagingResponseModel(
+            list.map { SongResponse.lite(it) },
+            0,
+            list.size,
+            list.size,
+            1,
+            list.size.toLong(),
         )
     }
 

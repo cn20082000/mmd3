@@ -12,6 +12,7 @@ interface ProducerService {
 
     fun getAllProducerLite(): PagingResponseModel
     fun getPagingProducer(paging: PagingRequestModel<Any>): PagingResponseModel
+    fun getSongLite(request: ProducerUpdateRequest): PagingResponseModel
 
     fun updateProducer(request: ProducerUpdateRequest): ProducerResponse
 

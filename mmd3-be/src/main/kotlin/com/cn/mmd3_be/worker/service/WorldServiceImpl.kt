@@ -6,8 +6,10 @@ import com.cn.mmd3_be.model.enumi.EError
 import com.cn.mmd3_be.model.request.api.WorldCreateRequest
 import com.cn.mmd3_be.model.request.api.WorldUpdateRequest
 import com.cn.mmd3_be.model.request.base.PagingRequestModel
+import com.cn.mmd3_be.model.response.api.CharacterResponse
 import com.cn.mmd3_be.model.response.api.WorldResponse
 import com.cn.mmd3_be.model.response.base.PagingResponseModel
+import com.cn.mmd3_be.worker.repository.CharacterRepository
 import com.cn.mmd3_be.worker.repository.WorldRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -17,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class WorldServiceImpl(
-    private val worldRepo: WorldRepository
+    private val worldRepo: WorldRepository,
+    private val characterRepo: CharacterRepository,
 ) : WorldService {
 
     @Transactional
@@ -36,6 +39,23 @@ class WorldServiceImpl(
 
         return PagingResponseModel(
             list.map { WorldResponse.lite(it) },
+            0,
+            list.size,
+            list.size,
+            1,
+            list.size.toLong(),
+        )
+    }
+
+    override fun getCharacterLite(request: WorldUpdateRequest): PagingResponseModel {
+        val world = worldRepo.getById(request.id) ?: throw ApiException()
+            .httpStatus(HttpStatus.NOT_FOUND)
+            .error(EError.NOT_FOUND_RECORD)
+
+        val list = characterRepo.getByWorld(world)
+
+        return PagingResponseModel(
+            list.map { CharacterResponse.lite(it) },
             0,
             list.size,
             list.size,

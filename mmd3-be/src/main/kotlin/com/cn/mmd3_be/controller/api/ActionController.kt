@@ -5,14 +5,7 @@ import com.cn.mmd3_be.model.request.api.ActionUpdateRequest
 import com.cn.mmd3_be.model.request.base.PagingRequestModel
 import com.cn.mmd3_be.model.response.base.ResponseModel
 import com.cn.mmd3_be.worker.service.ActionService
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
@@ -31,8 +24,9 @@ class ActionController(
         return ResponseModel.ok(actionService.getAllActionLite())
     }
 
-    @PostMapping("/paging")
-    fun getPagingAction(@RequestBody paging: PagingRequestModel<Any>): ResponseModel {
+    @GetMapping("/paging")
+    fun getPagingAction(@RequestParam pageIndex: Int, @RequestParam pageSize: Int): ResponseModel {
+        val paging = PagingRequestModel<Any>(pageIndex, pageSize, null)
         return ResponseModel.ok(actionService.getPagingAction(paging))
     }
 

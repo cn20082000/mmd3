@@ -13,7 +13,6 @@ interface CharacterService {
 
     fun getAllCharacterLite(): PagingResponseModel
     fun getPagingCharacter(paging: PagingRequestModel<Any>): PagingResponseModel
-    fun getPagingCharacterByWorld(paging: PagingRequestModel<WorldUpdateRequest>): PagingResponseModel
 
     fun updateCharacter(request: CharacterUpdateRequest): CharacterResponse
 

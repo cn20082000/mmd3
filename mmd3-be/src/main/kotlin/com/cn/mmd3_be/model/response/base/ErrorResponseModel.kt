@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.http.HttpStatus
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.MissingServletRequestParameterException
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.NoHandlerFoundException
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,6 +41,20 @@ class ErrorResponseModel private constructor(
     )
 
     constructor(ex: HttpMessageNotReadableException) : this(
+        HttpStatus.BAD_REQUEST.value(),
+        EError.UNKNOWN_ERROR,
+        ex.localizedMessage,
+        if (Constant.IS_DEBUG) ex.stackTraceToString() else null,
+    )
+
+    constructor(ex: MissingServletRequestParameterException) : this(
+        HttpStatus.BAD_REQUEST.value(),
+        EError.UNKNOWN_ERROR,
+        ex.localizedMessage,
+        if (Constant.IS_DEBUG) ex.stackTraceToString() else null,
+    )
+
+    constructor(ex: MethodArgumentTypeMismatchException) : this(
         HttpStatus.BAD_REQUEST.value(),
         EError.UNKNOWN_ERROR,
         ex.localizedMessage,

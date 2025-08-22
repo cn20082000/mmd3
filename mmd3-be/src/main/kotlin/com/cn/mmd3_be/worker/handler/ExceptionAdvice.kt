@@ -8,9 +8,11 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.NoHandlerFoundException
 
 @RestControllerAdvice
@@ -48,6 +50,24 @@ class ExceptionAdvice {
     @ExceptionHandler(HttpMessageNotReadableException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun httpRequestMethodNotSupportedException(ex: HttpMessageNotReadableException): ResponseModel {
+        if (Constant.IS_DEBUG) {
+            ex.printStackTrace()
+        }
+        return ResponseModel.error(ErrorResponseModel(ex))
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun missingServletRequestParameterException(ex: MissingServletRequestParameterException): ResponseModel {
+        if (Constant.IS_DEBUG) {
+            ex.printStackTrace()
+        }
+        return ResponseModel.error(ErrorResponseModel(ex))
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun methodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException): ResponseModel {
         if (Constant.IS_DEBUG) {
             ex.printStackTrace()
         }

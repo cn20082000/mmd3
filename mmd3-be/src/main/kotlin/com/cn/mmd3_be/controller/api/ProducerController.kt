@@ -5,13 +5,7 @@ import com.cn.mmd3_be.model.request.api.ProducerUpdateRequest
 import com.cn.mmd3_be.model.request.base.PagingRequestModel
 import com.cn.mmd3_be.model.response.base.ResponseModel
 import com.cn.mmd3_be.worker.service.ProducerService
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
@@ -25,14 +19,21 @@ class ProducerController(
         return ResponseModel.ok(producerService.createProducer(request))
     }
 
-    @PostMapping("/lite")
+    @GetMapping("/lite")
     fun getAllProducerLite(): ResponseModel {
         return ResponseModel.ok(producerService.getAllProducerLite())
     }
 
-    @PostMapping("/paging")
-    fun getPagingProducer(@RequestBody paging: PagingRequestModel<Any>): ResponseModel {
+    @GetMapping("/paging")
+    fun getPagingProducer(@RequestParam pageIndex: Int, @RequestParam pageSize: Int): ResponseModel {
+        val paging = PagingRequestModel<Any>(pageIndex, pageSize, null)
         return ResponseModel.ok(producerService.getPagingProducer(paging))
+    }
+
+    @GetMapping("{id}/song/lite")
+    fun getSongLite(@PathVariable id: String): ResponseModel {
+        val request = ProducerUpdateRequest(id = id)
+        return ResponseModel.ok(producerService.getSongLite(request))
     }
 
     @PutMapping

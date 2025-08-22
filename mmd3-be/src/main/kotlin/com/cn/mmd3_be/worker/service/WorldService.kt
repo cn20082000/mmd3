@@ -12,6 +12,7 @@ interface WorldService {
 
     fun getAllWorldLite(): PagingResponseModel
     fun getPagingWorld(paging: PagingRequestModel<Any>): PagingResponseModel
+    fun getCharacterLite(request: WorldUpdateRequest): PagingResponseModel
 
     fun updateWorld(request: WorldUpdateRequest): WorldResponse
 

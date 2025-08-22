@@ -7,10 +7,12 @@ import com.cn.mmd3_be.model.response.base.ResponseModel
 import com.cn.mmd3_be.worker.service.SongService
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -25,13 +27,14 @@ class SongController(
         return ResponseModel.ok(songService.createSong(request))
     }
 
-    @PostMapping("/lite")
+    @GetMapping("/lite")
     fun getAllSongLite(): ResponseModel {
         return ResponseModel.ok(songService.getAllSongLite())
     }
 
-    @PostMapping("/paging")
-    fun getPagingSong(@RequestBody paging: PagingRequestModel<Any>): ResponseModel {
+    @GetMapping("/paging")
+    fun getPagingSong(@RequestParam pageIndex: Int, @RequestParam pageSize: Int): ResponseModel {
+        val paging = PagingRequestModel<Any>(pageIndex, pageSize, null)
         return ResponseModel.ok(songService.getPagingSong(paging))
     }
 
