@@ -1,6 +1,6 @@
 package com.cn.mmd3_be.model.response.api
 
-import com.cn.mmd3_be.common.UrlBuilder
+import com.cn.mmd3_be.common.util.UrlBuilder
 import com.cn.mmd3_be.model.entity.AuthorEntity
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonInclude

@@ -1,5 +1,6 @@
-package com.cn.mmd3_be.common
+package com.cn.mmd3_be.common.util
 
+import com.cn.mmd3_be.common.Constant
 import com.cn.mmd3_be.model.entity.AuthorEntity
 import com.cn.mmd3_be.model.entity.AuthorResourceEntity
 
